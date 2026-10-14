@@ -179,9 +179,9 @@ body.small .cart .label { justify-content: center; }
 body.small #list { display: flex; }
 #list .cart { --u: 3.4px; height: auto; min-height: 64px; margin: 0; }
 #list .cart::after { display: none; }
-#list .cart .label { padding: 8px 10px; gap: 12px; }
+#list .cart .label { padding: 8px 10px; gap: 12px; justify-content: flex-start; }
 #list .cart .title { display: block; font-size: 17px; line-height: 1.15; -webkit-line-clamp: unset; }
-#list .cart .num { font-size: 12px; padding: 6px; }
+#list .cart .num { font-size: 12px; padding: 6px 0; width: 64px; text-align: center; box-sizing: border-box; }
 #list .cart.out { background: var(--c); border: 3px solid var(--gold); box-shadow: 0 0 0 3px var(--ink); }
 #list .cart.out > * { visibility: visible; }
 #list .cart.out .label { background: #fff6c8; }
