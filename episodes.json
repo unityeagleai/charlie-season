@@ -1,0 +1,6 @@
+[
+  { "number": 1, "title": "Charlie vs Miles: Check the Papers", "video": "videos/ep01-check-the-papers.mp4", "color": "#3aa0ff" },
+  { "number": 2, "title": "Backrooms.exe: Debug Mode", "video": "videos/ep02-vr-backrooms.mp4", "color": "#ff3fd1" },
+  { "number": 3, "title": "Build the Basement", "video": "videos/ep03-build-the-basement.mp4", "color": "#ff8a1f" },
+  { "number": 4, "title": "The Basement Records", "video": "videos/ep04-the-basement-records.mp4", "color": "#5ce07a" }
+]

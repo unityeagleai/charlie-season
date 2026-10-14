@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Charlie: Season 1 · Unity's Room</title>
+<meta name="description" content="Unity's 80s bedroom: pick a cartridge, slide it into the console and watch the episode on the CRT.">
+<meta name="theme-color" content="#07060f">
+<link rel="icon" href="img/favicon.png">
+<link rel="preload" href="img/room.png" as="image">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main id="app">
+  <div id="stage" aria-label="Unity's bedroom">
+    <img id="room" src="img/room.png" alt="Pixel-art 80s bedroom: Unity sits on the rug with a joystick in front of a CRT TV and a game console, posters on the walls, a lava lamp, a bed with a Roomba parked underneath and a shelf of cartridges." draggable="false">
+
+    <div id="lava" class="abs" style="--x:134;--y:99;--w:7;--h:12" aria-hidden="true"><i></i><i></i><i></i></div>
+
+    <div id="tv" class="abs" style="--x:159;--y:59;--w:107;--h:69">
+      <video id="vid" preload="none" playsinline webkit-playsinline disablepictureinpicture></video>
+      <canvas id="static" width="96" height="62" aria-hidden="true"></canvas>
+      <button id="idle" class="tvmsg" aria-label="Play episode 1">
+        <span class="t1">CHARLIE</span>
+        <span class="t2">SEASON 1</span>
+        <span class="t3 blink">INSERT CARTRIDGE</span>
+      </button>
+      <div id="msg" class="tvmsg" hidden><span class="t2" id="msg1"></span><span class="t3" id="msg2"></span></div>
+      <div class="crt" aria-hidden="true"></div>
+      <div class="roll" aria-hidden="true"></div>
+      <div id="fsbar">
+        <button data-act="prev" aria-label="Previous episode">&#9664;&#9664;</button>
+        <button data-act="play" class="playbtn" aria-label="Play or pause">&#9654;</button>
+        <button data-act="next" aria-label="Next episode">&#9654;&#9654;</button>
+        <span class="fstitle"></span>
+        <button data-act="full" aria-label="Exit fullscreen">EXIT</button>
+      </div>
+    </div>
+
+    <div id="shelf" class="abs" style="--x:303;--y:64;--w:91;--h:84" role="list" aria-label="Cartridge shelf"></div>
+
+    <div id="slotcart" class="abs" style="--x:207;--y:155;--w:16;--h:13" aria-hidden="true"><b></b></div>
+
+    <button id="roomba" class="abs" style="--x:52;--y:177;--w:16;--h:17" aria-label="The crowned Roomba"><img src="img/roomba.png" alt="" draggable="false"></button>
+    <div id="bubble" aria-live="polite"></div>
+  </div>
+
+  <div id="bar">
+    <div id="now">
+      <div id="nowtitle">CHARLIE · SEASON 1 <span>pick a cartridge</span></div>
+      <div id="seek" role="slider" aria-label="Seek" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"><div id="seekfill"></div></div>
+    </div>
+    <div id="controls">
+      <button data-act="prev" aria-label="Previous episode">&#9664;&#9664;<small>PREV</small></button>
+      <button data-act="play" class="playbtn" aria-label="Play or pause">&#9654;<small>PLAY</small></button>
+      <button data-act="next" aria-label="Next episode">&#9654;&#9654;<small>NEXT</small></button>
+      <button data-act="full" aria-label="Fullscreen">[&nbsp;]<small>FULL</small></button>
+    </div>
+  </div>
+
+  <section id="list" aria-label="Episodes"></section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
