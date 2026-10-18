@@ -28,13 +28,18 @@ Tip: for faster start-up, move the MP4 index to the front before adding it:
 ## How it stays light on the Quest
 
 - Only the episode you pick is loaded. The video tag uses `preload="none"` and the previous episode is unloaded when you switch.
-- Nothing heavy plays on its own. The only motion is CSS (lava lamp, scanline roll) and one small Roomba sprite.
+- Nothing heavy plays on its own. The only motion is CSS (lava lamp, scanline roll, Unity Eagle's idle bob) and one small Roomba sprite.
+
+## Player 1: Unity Eagle
+
+Unity Eagle's 8-bit sprite (`img/unity-eagle.png`, 108×144) stands on the floor right of the console, under the shelf, with a "1P · PLAYER 1 · UNITY EAGLE" tag beside her. Tap her for a select bleep and a speech bubble. `app.js` sizes her in whole device pixels per sprite pixel so she stays pixel-sharp; on small low-density screens it swaps in `img/unity-eagle-half.png`, the same sprite on a coarser grid.
 - Big tap targets for controllers and hand tracking: cartridges, the TV screen (tap to play/pause), and 60 px buttons in the bar.
 
 ## Files
 
 - `index.html`, `style.css`, `app.js`: the page.
 - `episodes.json`: the episode list.
+- `img/unity-eagle.png`, `img/unity-eagle-half.png`: Unity Eagle, player 1.
 - `img/room.png`: the bedroom, drawn by `tools/draw_room.py` (Python + Pillow; run `python3 tools/draw_room.py` from the repo root to redraw it). The page places the TV screen, shelf, lava lamp and Roomba over it in the same 400×225 pixel grid.
 - `fonts/`: Press Start 2P and Silkscreen, both under the SIL Open Font License 1.1.
 
