@@ -10,13 +10,42 @@
   const ROOM_W = 400;
   let eps = [], cur = -1, u = 2, staticUntil = 0, staticRAF = 0;
 
+  /* ------------------------------------------------------------ Unity Eagle, player 1: stands on the floor right of the console, under the shelf.
+     Sized in whole device pixels per sprite pixel so she stays pixel-crisp; at most 53 room pixels tall (top rows of the file are empty) so she never reaches the shelf. */
+  const p1 = $('#p1'), p1tag = $('#p1tag');
+  const P1 = { right: 396, foot: 224, maxH: 53,
+    full: { src: 'img/unity-eagle.png?v=2', w: 108, h: 144 },        // the 8-bit sprite, 1 file pixel = 1 sprite pixel
+    half: { src: 'img/unity-eagle-half.png?v=2', w: 54, h: 72 } };   // same sprite on a 2x coarser grid, for small low-density screens
+  function placeP1() {
+    if (!p1) return;
+    const dpr = window.devicePixelRatio || 1, s = stage.getBoundingClientRect();
+    let spr = P1.full, k = Math.floor(P1.maxH * u * dpr / spr.h);
+    if (k < 1) { spr = P1.half; k = Math.floor(P1.maxH * u * dpr / spr.h); }
+    const img = p1.firstElementChild;
+    if (!img.src.endsWith(spr.src)) img.src = spr.src;
+    const sp = k >= 1 ? k / dpr : P1.maxH * u / spr.h;          // css px per sprite pixel
+    const w = spr.w * sp, h = spr.h * sp;
+    // sprite sizes are multiples of 6, so w and h come out in whole css px at 1x, 1.5x, 2x and 3x; snap the corner to a whole css px too
+    const snapX = v => Math.round(s.left + v) - s.left;
+    const snapY = v => Math.round(s.top + v) - s.top;
+    const left = snapX(P1.right * u - w), top = snapY(P1.foot * u - h);
+    p1.style.left = left + 'px'; p1.style.top = top + 'px';
+    p1.style.width = w + 'px'; p1.style.height = h + 'px';
+    p1.style.setProperty('--sp', sp + 'px');
+    p1.dataset.k = k;
+    p1tag.style.right = (s.width - left + 2 * u) + 'px';
+    p1tag.style.top = (top + h * 0.45) + 'px';
+  }
+
   /* ------------------------------------------------------------ scale: 1 room pixel = u css px */
   function resize() {
     u = stage.getBoundingClientRect().width / ROOM_W;
     document.documentElement.style.setProperty('--u', u + 'px');
     document.body.classList.toggle('small', u < 2);
+    placeP1();
   }
   new ResizeObserver(resize).observe(stage);
+  new ResizeObserver(placeP1).observe($('#app'));   // the stage can move without resizing (episode list appears below it)
   resize();
 
   /* ------------------------------------------------------------ bleeps (tiny WebAudio square waves, no files) */
@@ -40,6 +69,7 @@
     click: () => bleep([660], 0.035, 0.04),
     eject: () => bleep([523, 330], 0.04, 0.05),
     roomba: () => bleep([523, 659, 784, 659, 1047], 0.04, 0.09),
+    p1: () => bleep([784, 988, 1175, 1568], 0.04, 0.07),
   };
 
   /* ------------------------------------------------------------ TV static */
@@ -308,7 +338,23 @@
     clearTimeout(bubble._t);
     bubble._t = setTimeout(() => bubble.classList.remove('show'), 1800);
   });
-  addEventListener('resize', () => { if (trip) trip.cancel(); });
+  addEventListener('resize', () => { if (trip) trip.cancel(); placeP1(); });
+
+  /* ------------------------------------------------------------ player 1 select: tap Unity Eagle */
+  const P1_LINES = ['1P READY!', 'PRESS START', 'EAGLE MODE', 'GLITCH ON'];
+  let p1n = 0;
+  p1.addEventListener('click', () => {
+    SFX.p1();
+    p1.classList.remove('go'); void p1.offsetWidth; p1.classList.add('go');
+    const r = p1.getBoundingClientRect(), s = stage.getBoundingClientRect();
+    bubble.textContent = P1_LINES[p1n++ % P1_LINES.length];
+    bubble.style.left = Math.min(r.left - s.left + r.width / 2, s.width - bubble.offsetWidth / 2 - 2 * u) + 'px';
+    bubble.style.top = (r.top - s.top - 1 * u) + 'px';
+    bubble.classList.add('show');
+    clearTimeout(bubble._t);
+    bubble._t = setTimeout(() => bubble.classList.remove('show'), 1800);
+  });
+  p1.addEventListener('animationend', () => p1.classList.remove('go'));
 
   /* ------------------------------------------------------------ load the episode list */
   fetch('episodes.json', { cache: 'no-cache' })
